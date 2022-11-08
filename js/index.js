@@ -1,11 +1,23 @@
 import { getItemTemplate } from "./getItemTemplate.js";
 import { items as importedItems } from "./items.js";
 
+//basicLightbox
+const modal = basicLightbox.create(`
+    <div class="modal">
+        <p class="modal-text">
+            
+        </p>
+        <button>Close</button>
+    </div>
+`);
+
 let items = importedItems;
 
 const refs = {
     list: document.querySelector(".list"),
     form: document.querySelector(".form"),
+    modalText: modal.element().querySelector(".modal-text"),
+    modalCloseButton: modal.element().querySelector("button"),
 };
 
 const render = () => {
@@ -21,6 +33,7 @@ const addItem = (value) => {
         id: uuid.v4(),
         text: value,
         isDone: false,
+        created: new Date(),
     };
 
     items.push(payload);
@@ -48,7 +61,10 @@ const toggleItem = (id) => {
 };
 
 const viewItem = (id) => { 
-    console.log("view", id);
+    const { created } = items.find(item => item.id === id);
+    refs.modalText.textContent = created;
+    modal.show();
+    //console.log("view", id);
 }
 
 const removeItem = (id) => { 
@@ -86,4 +102,6 @@ refs.form.addEventListener("submit", onSubmit);
 refs.list.addEventListener("click", onListClick);
 
 
+modal.show();
+refs.modalCloseButton.addEventListener("click", modal.close);
 
