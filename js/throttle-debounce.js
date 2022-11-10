@@ -3,7 +3,7 @@ const refs = {
     button: document.querySelector("button"),
 }
 
-refs.input.addEventListener("input", onInput);
+refs.input.addEventListener("input", _.debounce(onInput, 1000));
 refs.button.addEventListener("click", onClick);
 
 
